@@ -2,12 +2,106 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Perumal's LeetCode Stats</title>
+  <title>Perumal's LeetCode Full Stats</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #eee;
+      font-family: 'Fira Code', monospace;
+      text-align: center;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .stats-container {
+      background: #1e1e1e;
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 700px;
+      width: 100%;
+      box-shadow: 0 0 20px #302b63;
+    }
+    h1 a {
+      color: #61dafb;
+      text-decoration: none;
+    }
+    .badges img {
+      margin: 10px 6px;
+      vertical-align: middle;
+    }
+    .details {
+      margin-top: 20px;
+      text-align: left;
+      font-size: 1.1em;
+    }
+    .details p {
+      margin: 6px 0;
+    }
+    .heatmap {
+      margin-top: 30px;
+    }
+    .error {
+      color: #ff6b6b;
+      margin-top: 20px;
+    }
+  </style>
 </head>
-<body style="background-color:#121212; color:white; font-family: 'Fira Code', monospace;">
-  <h1>LeetCode Stats for Perumal</h1>
-  <a href="https://leetcode.com/perumalhacks" target="_blank" rel="noopener noreferrer">
-    <img src="https://leetcode-stats.vercel.app/api?username=perumalhacks&theme=dark" alt="LeetCode Stats" />
-  </a>
+<body>
+  <div class="stats-container" id="statsContainer">
+    <h1>LeetCode Full Stats for <a href="https://leetcode.com/perumalhacks" target="_blank" rel="noopener noreferrer">perumalhacks</a></h1>
+    <p>Loading stats...</p>
+  </div>
+
+  <script>
+    async function fetchLeetCodeStats(username) {
+      const container = document.getElementById('statsContainer');
+      try {
+        const response = await fetch(`https://leetcode-stats-api.herokuapp.com/${username}`);
+        if (!response.ok) throw new Error('Failed to fetch stats');
+        const data = await response.json();
+
+        if (data.status === 'error') {
+          container.innerHTML = `<p class="error">User not found or API error.</p>`;
+          return;
+        }
+
+        container.innerHTML = `
+          <h1>LeetCode Full Stats for <a href="https://leetcode.com/${username}" target="_blank" rel="noopener noreferrer">${username}</a></h1>
+          <div class="badges">
+            <img src="https://img.shields.io/badge/Total_Solved-${data.totalSolved}-brightgreen?style=for-the-badge" alt="Total Solved" />
+            <img src="https://img.shields.io/badge/Easy-${data.easySolved}-success?style=for-the-badge" alt="Easy Solved" />
+            <img src="https://img.shields.io/badge/Medium-${data.mediumSolved}-yellow?style=for-the-badge" alt="Medium Solved" />
+            <img src="https://img.shields.io/badge/Hard-${data.hardSolved}-red?style=for-the-badge" alt="Hard Solved" />
+            <img src="https://img.shields.io/badge/Acceptance-${(data.acceptanceRate * 100).toFixed(2)}%25-blue?style=for-the-badge" alt="Acceptance Rate" />
+            <img src="https://img.shields.io/badge/Solutions_Viewed-${data.solutionCount}-informational?style=for-the-badge&color=purple" alt="Solutions Viewed" />
+            <img src="https://img.shields.io/badge/Reputation-${data.reputation}-important?style=for-the-badge&color=orange" alt="Reputation" />
+            <img src="https://img.shields.io/badge/Badges-${data.badgesCount}-blueviolet?style=for-the-badge" alt="Badges Count" />
+            <img src="https://img.shields.io/badge/Max_Streak-${data.maxStreak}-cyan?style=for-the-badge" alt="Max Streak" />
+            <img src="https://img.shields.io/badge/Current_Streak-${data.currentStreak}-pink?style=for-the-badge" alt="Current Streak" />
+          </div>
+          <div class="details">
+            <p><strong>Ranking:</strong> #${data.ranking.toLocaleString()}</p>
+            <p><strong>Reputation:</strong> ${data.reputation}</p>
+            <p><strong>Contribution Points:</strong> ${data.contributionPoints}</p>
+            <p><strong>Submission Count:</strong> ${data.submissionCount}</p>
+            <p><strong>Solutions Viewed:</strong> ${data.solutionCount}</p>
+            <p><strong>Badges Count:</strong> ${data.badgesCount}</p>
+            <p><strong>Max Streak:</strong> ${data.maxStreak} days</p>
+            <p><strong>Current Streak:</strong> ${data.currentStreak} days</p>
+          </div>
+          <div class="heatmap">
+            <h3>Submission Activity Heatmap</h3>
+            <img src="https://leetcode-stats.vercel.app/api/chart?username=${username}&theme=dark" alt="LeetCode Heatmap" />
+          </div>
+        `;
+      } catch (err) {
+        container.innerHTML = `<p class="error">Error: ${err.message}</p>`;
+      }
+    }
+
+    fetchLeetCodeStats('perumalhacks');
+  </script>
 </body>
 </html>
