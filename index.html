@@ -1,221 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>LeetCode Stats - perumalhacks</title>
-<style>
-  /* Reset and base */
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    background: #f7f8fa;
-    margin: 0;
-    padding: 30px 15px;
-    color: #24292e;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LeetCode Stats - perumalhacks</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      background: #f7f8fa;
+      margin: 0;
+      padding: 30px 15px;
+      color: #24292e;
+    }
 
-  h1, h2 {
-    text-align: center;
-    font-weight: 600;
-    margin-bottom: 0.3em;
-    color: #24292e;
-  }
+    h1, h2 {
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 0.3em;
+      color: #24292e;
+    }
 
-  .container {
-    max-width: 850px;
-    margin: auto;
-    background: #fff;
-    border-radius: 8px;
-    padding: 30px 40px;
-    box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
-  }
+    .container {
+      max-width: 850px;
+      margin: auto;
+      background: #fff;
+      border-radius: 8px;
+      padding: 30px 40px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
 
-  .summary {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    gap: 24px;
-    margin-bottom: 40px;
-  }
-
-  .card {
-    background: #fafafa;
-    border: 1px solid #e1e4e8;
-    border-radius: 6px;
-    padding: 20px 28px;
-    min-width: 140px;
-    text-align: center;
-    box-shadow: none;
-    transition: box-shadow 0.2s ease;
-  }
-
-  .card:hover {
-    box-shadow: 0 4px 12px rgb(0 0 0 / 0.12);
-  }
-
-  .card h3 {
-    margin: 8px 0 0;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #28a745; /* LeetCode green accent */
-  }
-
-  .card p {
-    margin: 6px 0 0;
-    font-weight: 500;
-    font-size: 1rem;
-    color: #586069;
-  }
-
-  /* Difficulty bars */
-  .difficulty-bar {
-    background: #e1e4e8;
-    height: 12px;
-    border-radius: 6px;
-    overflow: hidden;
-    margin-top: 10px;
-  }
-  .bar-easy {
-    background-color: #28a745; /* green */
-    height: 12px;
-    width: 0;
-    transition: width 0.7s ease;
-  }
-  .bar-medium {
-    background-color: #dbab09; /* amber */
-    height: 12px;
-    width: 0;
-    transition: width 0.7s ease;
-  }
-  .bar-hard {
-    background-color: #d73a49; /* red */
-    height: 12px;
-    width: 0;
-    transition: width 0.7s ease;
-  }
-
-  /* Heatmap Image Placeholder */
-  #heatmap {
-    margin-top: 20px;
-    height: 180px;
-    max-width: 100%;
-    border: 1.5px solid #d1d5da;
-    border-radius: 8px;
-    background-color: #fafafa;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #8b949e;
-    font-size: 1.2rem;
-    font-weight: 600;
-    user-select: none;
-  }
-
-  /* Responsive */
-  @media (max-width: 600px) {
     .summary {
-      flex-direction: column;
-      gap: 20px;
-      align-items: center;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-bottom: 40px;
     }
+
     .card {
-      min-width: 90%;
+      background: #fafafa;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      padding: 20px 28px;
+      min-width: 140px;
+      text-align: center;
+      transition: box-shadow 0.2s ease;
     }
-  }
-</style>
+
+    .card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    .card h3 {
+      margin: 8px 0 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #28a745;
+    }
+
+    .card p {
+      margin: 6px 0 0;
+      font-weight: 500;
+      font-size: 1rem;
+      color: #586069;
+    }
+
+    .difficulty-bar {
+      background: #e1e4e8;
+      height: 12px;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .bar-easy { background-color: #28a745; height: 12px; width: 0; transition: width 0.7s ease; }
+    .bar-medium { background-color: #dbab09; height: 12px; width: 0; transition: width 0.7s ease; }
+    .bar-hard { background-color: #d73a49; height: 12px; width: 0; transition: width 0.7s ease; }
+
+    #heatmap {
+      margin-top: 20px;
+      height: 180px;
+      max-width: 100%;
+      border: 1.5px solid #d1d5da;
+      border-radius: 8px;
+      background-color: #fafafa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #8b949e;
+      font-size: 1.2rem;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    @media (max-width: 600px) {
+      .summary {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .card {
+        min-width: 90%;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-  <h1>LeetCode Stats for <strong>perumal</strong></h1>
+  <div class="container">
+    <h1>LeetCode Stats for <strong>perumal</strong></h1>
 
-  <section class="summary">
-    <div class="card">
-      <h3 id="totalSolved">0</h3>
-      <p>Total Problems Solved</p>
-    </div>
-    <div class="card">
-      <h3 id="acceptanceRate">0%</h3>
-      <p>Acceptance Rate</p>
-    </div>
-    <div class="card">
-      <h3 id="ranking">#0</h3>
-      <p>Global Ranking</p>
-    </div>
-    <div class="card">
-      <h3 id="contributionPoints">0</h3>
-      <p>Contribution Points</p>
-    </div>
-    <div class="card">
-      <h3 id="contributionPoints">2K+</h3>
-      <p>Solution viwers</p>
-    </div>
-    <div class="card">
-      <h3 id="reputation">0</h3>
-      <p>Reputation</p>
-    </div>
-  </section>
+    <section class="summary">
+      <div class="card">
+        <h3 id="totalSolved">0</h3>
+        <p>Total Problems Solved</p>
+      </div>
+      <div class="card">
+        <h3 id="acceptanceRate">0%</h3>
+        <p>Acceptance Rate</p>
+      </div>
+      <div class="card">
+        <h3 id="ranking">#0</h3>
+        <p>Global Ranking</p>
+      </div>
+      <div class="card">
+        <h3 id="contributionPoints">0</h3>
+        <p>Contribution Points</p>
+      </div>
+      <div class="card">
+        <h3 id="reputation">0</h3>
+        <p>Reputation</p>
+      </div>
+    </section>
 
-  <h2>Problem Solving Breakdown</h2>
-  <section class="summary">
-    <div class="card" style="flex-grow:1; max-width: 250px;">
-      <h3 id="easySolved">0 / 0</h3>
-      <p>Easy Solved / Total</p>
-      <div class="difficulty-bar"><div class="bar-easy" id="barEasy"></div></div>
-    </div>
-    <div class="card" style="flex-grow:1; max-width: 250px;">
-      <h3 id="mediumSolved">0 / 0</h3>
-      <p>Medium Solved / Total</p>
-      <div class="difficulty-bar"><div class="bar-medium" id="barMedium"></div></div>
-    </div>
-    <div class="card" style="flex-grow:1; max-width: 250px;">
-      <h3 id="hardSolved">0 / 0</h3>
-      <p>Hard Solved / Total</p>
-      <div class="difficulty-bar"><div class="bar-hard" id="barHard"></div></div>
-    </div>
-  </section>
+    <h2>Problem Solving Breakdown</h2>
+    <section class="summary">
+      <div class="card" style="flex-grow:1; max-width: 250px;">
+        <h3 id="easySolved">0 / 0</h3>
+        <p>Easy Solved / Total</p>
+        <div class="difficulty-bar"><div class="bar-easy" id="barEasy"></div></div>
+      </div>
+      <div class="card" style="flex-grow:1; max-width: 250px;">
+        <h3 id="mediumSolved">0 / 0</h3>
+        <p>Medium Solved / Total</p>
+        <div class="difficulty-bar"><div class="bar-medium" id="barMedium"></div></div>
+      </div>
+      <div class="card" style="flex-grow:1; max-width: 250px;">
+        <h3 id="hardSolved">0 / 0</h3>
+        <p>Hard Solved / Total</p>
+        <div class="difficulty-bar"><div class="bar-hard" id="barHard"></div></div>
+      </div>
+    </section>
 
-  <h2>Submission Calendar Heatmap</h2>
-  <div id="heatmap"><img src="heatmap.png" alt=""></div>
-</div>
+    <h2>Submission Calendar Heatmap</h2>
+    <div id="heatmap"><img src="heatmap.png" alt="LeetCode Heatmap" style="width: 100%; max-height: 180px; border-radius: 6px;" /></div>
+  </div>
 
-<script>
-  async function fetchStats() {
-    try {
-      const response = await fetch('https://leetcode-stats-api.herokuapp.com/perumalhacks');
-      const data = await response.json();
+  <script>
+    async function fetchStats() {
+      try {
+        const response = await fetch('https://leetcode-stats-api.herokuapp.com/perumalhacks');
+        const data = await response.json();
 
-      // Basic info
-      document.getElementById('totalSolved').textContent = data.totalSolved.toLocaleString();
-      document.getElementById('acceptanceRate').textContent = data.acceptanceRate.toFixed(2) + '%';
-      document.getElementById('ranking').textContent = '#' + data.ranking.toLocaleString();
-      document.getElementById('contributionPoints').textContent = data.contributionPoints.toLocaleString();
-      document.getElementById('reputation').textContent = data.reputation.toLocaleString();
+        document.getElementById('totalSolved').textContent = data.totalSolved.toLocaleString();
+        document.getElementById('acceptanceRate').textContent = data.acceptanceRate.toFixed(2) + '%';
+        document.getElementById('ranking').textContent = '#' + data.ranking.toLocaleString();
+        document.getElementById('contributionPoints').textContent = data.contributionPoints.toLocaleString();
+        document.getElementById('reputation').textContent = data.reputation.toLocaleString();
 
-      // Difficulty solved
-      document.getElementById('easySolved').textContent = `${data.easySolved} / ${data.totalEasy}`;
-      document.getElementById('mediumSolved').textContent = `${data.mediumSolved} / ${data.totalMedium}`;
-      document.getElementById('hardSolved').textContent = `${data.hardSolved} / ${data.totalHard}`;
+        document.getElementById('easySolved').textContent = `${data.easySolved} / ${data.totalEasy}`;
+        document.getElementById('mediumSolved').textContent = `${data.mediumSolved} / ${data.totalMedium}`;
+        document.getElementById('hardSolved').textContent = `${data.hardSolved} / ${data.totalHard}`;
 
-      // Set difficulty bar widths (percentage solved)
-      const easyPercent = (data.easySolved / data.totalEasy) * 100;
-      const mediumPercent = (data.mediumSolved / data.totalMedium) * 100;
-      const hardPercent = (data.hardSolved / data.totalHard) * 100;
+        const easyPercent = (data.easySolved / data.totalEasy) * 100;
+        const mediumPercent = (data.mediumSolved / data.totalMedium) * 100;
+        const hardPercent = (data.hardSolved / data.totalHard) * 100;
 
-      document.getElementById('barEasy').style.width = easyPercent + '%';
-      document.getElementById('barMedium').style.width = mediumPercent + '%';
-      document.getElementById('barHard').style.width = hardPercent + '%';
+        document.getElementById('barEasy').style.width = easyPercent + '%';
+        document.getElementById('barMedium').style.width = mediumPercent + '%';
+        document.getElementById('barHard').style.width = hardPercent + '%';
 
-      
-    } catch (error) {
-      console.error('Failed to fetch LeetCode stats:', error);
-      alert('Failed to load LeetCode stats. Please try again later.');
+      } catch (error) {
+        console.error('Failed to fetch LeetCode stats:', error);
+        alert('Failed to load LeetCode stats. Please try again later.');
+      }
     }
-  }
 
-  fetchStats();
-</script>
+    // Auto-fetch on load
+    window.onload = fetchStats;
+  </script>
 
 </body>
 </html>
