@@ -6,7 +6,8 @@
   <title>LeetCode Stats - perumalhacks</title>
   <style>
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
       background: #f7f8fa;
       margin: 0;
       padding: 30px 15px;
@@ -73,9 +74,26 @@
       margin-top: 10px;
     }
 
-    .bar-easy { background-color: #28a745; height: 12px; width: 0; transition: width 0.7s ease; }
-    .bar-medium { background-color: #dbab09; height: 12px; width: 0; transition: width 0.7s ease; }
-    .bar-hard { background-color: #d73a49; height: 12px; width: 0; transition: width 0.7s ease; }
+    .bar-easy {
+      background-color: #28a745;
+      height: 12px;
+      width: 0;
+      transition: width 0.7s ease;
+    }
+
+    .bar-medium {
+      background-color: #dbab09;
+      height: 12px;
+      width: 0;
+      transition: width 0.7s ease;
+    }
+
+    .bar-hard {
+      background-color: #d73a49;
+      height: 12px;
+      width: 0;
+      transition: width 0.7s ease;
+    }
 
     #heatmap {
       margin-top: 20px;
@@ -93,6 +111,14 @@
       user-select: none;
     }
 
+    #loading {
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
     @media (max-width: 600px) {
       .summary {
         flex-direction: column;
@@ -107,89 +133,125 @@
   </style>
 </head>
 <body>
-
   <div class="container">
-    <h1>LeetCode Stats for <strong>perumal</strong></h1>
+    <h1>
+      LeetCode Stats for <strong id="usernameDisplay">username</strong>
+    </h1>
 
-    <section class="summary">
-      <div class="card">
-        <h3 id="totalSolved">0</h3>
-        <p>Total Problems Solved</p>
-      </div>
-      <div class="card">
-        <h3 id="acceptanceRate">0%</h3>
-        <p>Acceptance Rate</p>
-      </div>
-      <div class="card">
-        <h3 id="ranking">#0</h3>
-        <p>Global Ranking</p>
-      </div>
-      <div class="card">
-        <h3 id="contributionPoints">0</h3>
-        <p>Contribution Points</p>
-      </div>
-      <div class="card">
-        <h3 id="reputation">0</h3>
-        <p>Reputation</p>
-      </div>
-    </section>
+    <div id="loading">Loading LeetCode stats...</div>
 
-    <h2>Problem Solving Breakdown</h2>
-    <section class="summary">
-      <div class="card" style="flex-grow:1; max-width: 250px;">
-        <h3 id="easySolved">0 / 0</h3>
-        <p>Easy Solved / Total</p>
-        <div class="difficulty-bar"><div class="bar-easy" id="barEasy"></div></div>
-      </div>
-      <div class="card" style="flex-grow:1; max-width: 250px;">
-        <h3 id="mediumSolved">0 / 0</h3>
-        <p>Medium Solved / Total</p>
-        <div class="difficulty-bar"><div class="bar-medium" id="barMedium"></div></div>
-      </div>
-      <div class="card" style="flex-grow:1; max-width: 250px;">
-        <h3 id="hardSolved">0 / 0</h3>
-        <p>Hard Solved / Total</p>
-        <div class="difficulty-bar"><div class="bar-hard" id="barHard"></div></div>
-      </div>
-    </section>
+    <div id="statsContainer" style="display:none;">
+      <section class="summary">
+        <div class="card">
+          <h3 id="totalSolved">0</h3>
+          <p>Total Problems Solved</p>
+        </div>
+        <div class="card">
+          <h3 id="acceptanceRate">0%</h3>
+          <p>Acceptance Rate</p>
+        </div>
+        <div class="card">
+          <h3 id="ranking">#0</h3>
+          <p>Global Ranking</p>
+        </div>
+        <div class="card">
+          <h3 id="contributionPoints">0</h3>
+          <p>Contribution Points</p>
+        </div>
+        <div class="card">
+          <h3 id="contributionPoints">2K+</h3>
+          <p>Solution viewers</p>
+        </div>
+        <div class="card">
+          <h3 id="reputation">0</h3>
+          <p>Reputation</p>
+        </div>
+      </section>
 
-    <h2>Submission Calendar Heatmap</h2>
-    <div id="heatmap"><img src="heatmap.png" alt="LeetCode Heatmap" style="width: 100%; max-height: 180px; border-radius: 6px;" /></div>
+      <h2>Problem Solving Breakdown</h2>
+      <section class="summary">
+        <div class="card" style="flex-grow: 1; max-width: 250px;">
+          <h3 id="easySolved">0 / 0</h3>
+          <p>Easy Solved / Total</p>
+          <div class="difficulty-bar">
+            <div class="bar-easy" id="barEasy"></div>
+          </div>
+        </div>
+        <div class="card" style="flex-grow: 1; max-width: 250px;">
+          <h3 id="mediumSolved">0 / 0</h3>
+          <p>Medium Solved / Total</p>
+          <div class="difficulty-bar">
+            <div class="bar-medium" id="barMedium"></div>
+          </div>
+        </div>
+        <div class="card" style="flex-grow: 1; max-width: 250px;">
+          <h3 id="hardSolved">0 / 0</h3>
+          <p>Hard Solved / Total</p>
+          <div class="difficulty-bar">
+            <div class="bar-hard" id="barHard"></div>
+          </div>
+        </div>
+      </section>
+
+      <h2>Submission Calendar Heatmap</h2>
+      <div id="heatmap">
+        <img
+          src="heatmap.png"
+          alt="LeetCode Heatmap"
+          style="width: 100%; max-height: 180px; border-radius: 6px"
+        />
+      </div>
+    </div>
   </div>
 
   <script>
+    const username = "perumalhacks";
+
+    document.getElementById("usernameDisplay").textContent = username;
+
     async function fetchStats() {
       try {
-        const response = await fetch('https://leetcode-stats-api.herokuapp.com/perumalhacks');
+        const response = await fetch(
+          `https://leetcode-stats-api.herokuapp.com/${username}`
+        );
+        if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
 
-        document.getElementById('totalSolved').textContent = data.totalSolved.toLocaleString();
-        document.getElementById('acceptanceRate').textContent = data.acceptanceRate.toFixed(2) + '%';
-        document.getElementById('ranking').textContent = '#' + data.ranking.toLocaleString();
-        document.getElementById('contributionPoints').textContent = data.contributionPoints.toLocaleString();
-        document.getElementById('reputation').textContent = data.reputation.toLocaleString();
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("statsContainer").style.display = "block";
 
-        document.getElementById('easySolved').textContent = `${data.easySolved} / ${data.totalEasy}`;
-        document.getElementById('mediumSolved').textContent = `${data.mediumSolved} / ${data.totalMedium}`;
-        document.getElementById('hardSolved').textContent = `${data.hardSolved} / ${data.totalHard}`;
+        document.getElementById("totalSolved").textContent =
+          data.totalSolved.toLocaleString();
+        document.getElementById("acceptanceRate").textContent =
+          data.acceptanceRate.toFixed(2) + "%";
+        document.getElementById("ranking").textContent =
+          "#" + data.ranking.toLocaleString();
+        document.getElementById("contributionPoints").textContent =
+          data.contributionPoints.toLocaleString();
+        document.getElementById("reputation").textContent =
+          data.reputation.toLocaleString();
+
+        document.getElementById("easySolved").textContent = `${data.easySolved} / ${data.totalEasy}`;
+        document.getElementById("mediumSolved").textContent = `${data.mediumSolved} / ${data.totalMedium}`;
+        document.getElementById("hardSolved").textContent = `${data.hardSolved} / ${data.totalHard}`;
 
         const easyPercent = (data.easySolved / data.totalEasy) * 100;
         const mediumPercent = (data.mediumSolved / data.totalMedium) * 100;
         const hardPercent = (data.hardSolved / data.totalHard) * 100;
 
-        document.getElementById('barEasy').style.width = easyPercent + '%';
-        document.getElementById('barMedium').style.width = mediumPercent + '%';
-        document.getElementById('barHard').style.width = hardPercent + '%';
-
+        document.getElementById("barEasy").style.width = easyPercent + "%";
+        document.getElementById("barMedium").style.width = mediumPercent + "%";
+        document.getElementById("barHard").style.width = hardPercent + "%";
       } catch (error) {
-        console.error('Failed to fetch LeetCode stats:', error);
-        alert('Failed to load LeetCode stats. Please try again later.');
+        console.error("Failed to fetch LeetCode stats:", error);
+        alert("Failed to load LeetCode stats. Please try again later.");
+        document.getElementById("loading").textContent =
+          "Failed to load stats.";
       }
     }
 
-    // Auto-fetch on load
+    // Load stats on page load
     window.onload = fetchStats;
   </script>
-
 </body>
 </html>
