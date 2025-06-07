@@ -2,63 +2,151 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>LeetCode Full Stats for perumalhacks</title>
+  <title>LeetCode Full Stats - perumalhacks</title>
   <style>
     body {
       background-color: #121212;
       color: white;
       font-family: 'Fira Code', monospace;
-      max-width: 600px;
-      margin: 2rem auto;
-      padding: 1rem;
+      padding: 20px;
     }
-    .stats p {
-      font-size: 1.1rem;
-      margin: 0.5rem 0;
+    h1 {
+      margin-bottom: 0.2em;
+    }
+    .stats {
+      margin-bottom: 2em;
+      line-height: 1.6;
+    }
+    .stat-item {
+      margin-bottom: 0.3em;
     }
     .heatmap {
-      margin-top: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 700px;
     }
+    .day {
+      width: 12px;
+      height: 12px;
+      margin: 1px;
+      border-radius: 3px;
+      background-color: #2a2a2a;
+      cursor: default;
+      transition: background-color 0.3s;
+      position: relative;
+    }
+    .day:hover::after {
+      content: attr(data-date) ": " attr(data-count) " submissions";
+      position: absolute;
+      background: #333;
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 4px;
+      top: -28px;
+      white-space: nowrap;
+      font-size: 10px;
+      pointer-events: none;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+    /* Heatmap color scale based on count */
+    .count-0 { background-color: #2a2a2a; }
+    .count-1 { background-color: #214f2f; }
+    .count-2 { background-color: #2a703a; }
+    .count-3 { background-color: #44a340; }
+    .count-4 { background-color: #8cc665; }
+    .count-5 { background-color: #d6e685; }
   </style>
 </head>
 <body>
-  <h1>LeetCode Full Stats for <span style="color:#61dafb;">perumalhacks</span></h1>
-  <div id="stats" class="stats">Loading stats...</div>
-  <div class="heatmap">
-    <h3>Submission Activity Heatmap</h3>
-    <img id="heatmap-img" alt="Submission Activity Heatmap" />
+
+  <h1>LeetCode Full Stats for <em>perumalhacks</em></h1>
+  
+  <div class="stats" id="stats">
+    <!-- Stats will be injected here -->
   </div>
 
+  <h2>Submission Activity Heatmap</h2>
+  <div class="heatmap" id="heatmap"></div>
+
   <script>
-    const username = 'perumalhacks';
-    const apiUrl = `https://leetcode-stats-api.herokuapp.com/${username}`;
+    // Sample JSON data (replace this with actual fetched data)
+    const data = {
+      status: "success",
+      message: "retrieved",
+      totalSolved: 274,
+      totalQuestions: 3571,
+      easySolved: 123,
+      totalEasy: 880,
+      mediumSolved: 136,
+      totalMedium: 1852,
+      hardSolved: 15,
+      totalHard: 839,
+      acceptanceRate: 83.39,
+      ranking: 404652,
+      contributionPoints: 1275,
+      reputation: 29,
+      submissionCalendar: {
+        "1722384000": 4,
+        "1722470400": 3,
+        "1722729600": 3,
+        // Add more timestamps here...
+        "1749081600": 1,
+        "1749168000": 1
+      }
+    };
 
-    fetch(apiUrl)
-      .then(response => response.json())
-      .then(data => {
-        if (data.status === 'error') {
-          document.getElementById('stats').innerHTML = `Error: ${data.message}`;
-          return;
-        }
+    function unixToDate(ts) {
+      // ts is seconds since epoch, convert to YYYY-MM-DD string
+      const date = new Date(ts * 1000);
+      return date.toISOString().slice(0, 10);
+    }
 
-        document.getElementById('stats').innerHTML = `
-          <p><strong>Ranking:</strong> #${data.ranking?.toLocaleString() ?? 'N/A'}</p>
-          <p><strong>Reputation:</strong> ${data.reputation ?? 'N/A'}</p>
-          <p><strong>Contribution Points:</strong> ${data.contributionPoints ?? 'N/A'}</p>
-          <p><strong>Submission Count:</strong> ${data.submissionCount ?? 'N/A'}</p>
-          <p><strong>Solutions Viewed:</strong> ${data.solutionCount ?? 'N/A'}</p>
-          <p><strong>Badges Count:</strong> ${data.badgesCount ?? 'N/A'}</p>
-          <p><strong>Max Streak:</strong> ${data.maxStreak ? data.maxStreak + ' days' : 'N/A'}</p>
-          <p><strong>Current Streak:</strong> ${data.currentStreak ? data.currentStreak + ' days' : 'N/A'}</p>
-        `;
+    function createStatsHTML(d) {
+      return `
+        <div class="stat-item"><strong>Ranking:</strong> #${d.ranking.toLocaleString()}</div>
+        <div class="stat-item"><strong>Reputation:</strong> ${d.reputation}</div>
+        <div class="stat-item"><strong>Contribution Points:</strong> ${d.contributionPoints}</div>
+        <div class="stat-item"><strong>Total Solved:</strong> ${d.totalSolved} / ${d.totalQuestions}</div>
+        <div class="stat-item"><strong>Easy Solved:</strong> ${d.easySolved} / ${d.totalEasy}</div>
+        <div class="stat-item"><strong>Medium Solved:</strong> ${d.mediumSolved} / ${d.totalMedium}</div>
+        <div class="stat-item"><strong>Hard Solved:</strong> ${d.hardSolved} / ${d.totalHard}</div>
+        <div class="stat-item"><strong>Acceptance Rate:</strong> ${d.acceptanceRate}%</div>
+      `;
+    }
 
-        // Set the heatmap image from the API
-        document.getElementById('heatmap-img').src = `https://leetcode.com/${username}/submission_calendar/`;
-      })
-      .catch(error => {
-        document.getElementById('stats').innerHTML = 'Failed to load data.';
-        console.error('Fetch error:', error);
+    function getHeatmapColorClass(count) {
+      // Map submission count to color class (max 5)
+      if (count >= 5) return 'count-5';
+      if (count === 4) return 'count-4';
+      if (count === 3) return 'count-3';
+      if (count === 2) return 'count-2';
+      if (count === 1) return 'count-1';
+      return 'count-0';
+    }
+
+    function renderHeatmap(calendar) {
+      const container = document.getElementById('heatmap');
+      const sortedTimestamps = Object.keys(calendar).sort((a,b) => a-b);
+
+      sortedTimestamps.forEach(ts => {
+        const count = calendar[ts];
+        const dateStr = unixToDate(Number(ts));
+        const div = document.createElement('div');
+        div.className = 'day ' + getHeatmapColorClass(count);
+        div.setAttribute('data-date', dateStr);
+        div.setAttribute('data-count', count);
+        container.appendChild(div);
       });
+    }
+
+    // Inject stats
+    document.getElementById('stats').innerHTML = createStatsHTML(data);
+
+    // Render heatmap
+    renderHeatmap(data.submissionCalendar);
   </script>
+
 </body>
 </html>
